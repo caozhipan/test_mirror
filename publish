@@ -1,0 +1,32 @@
+#!/bin/bash
+date=`date +%F`
+if [ -z "$1" ]
+then
+    echo "文章名不能为空"
+    exit
+else
+    file=$1
+fi
+
+if [ -z "$2" ]
+then
+    echo "文章类别不能为空"
+    exit
+else
+    category=$2
+fi
+
+
+head="<!--\n
+author: caozhipan\n
+date: $date\n
+title: $file\n
+category: $category\n
+status: publish\n
+-->\n"
+
+tmpFile=./tmp
+echo -e $head>$tmpFile
+cat $file>>$tmpFile
+scp $tmpFile  home:/home/pi/www/gitblog/blog/$file
+rm -fr $tmpFile
